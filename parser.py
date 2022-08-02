@@ -16,7 +16,7 @@ V -> "smiled" | "tell" | "were"
 """
 
 NONTERMINALS = """
-S -> N VP | S Conj S | Det N VP | S Conj VP
+S -> NP VP | S Conj S | Det N VP | S Conj VP
 VP -> V | VP Det NP | VP P Det NP | VP NP | VP Adv | Adv VP
 NP -> N | N NP | P NP | Adj NP | NP Adv
 
@@ -54,11 +54,11 @@ def main():
     # Print each tree with noun phrase chunks
     for tree in trees:
         tree.pretty_print()
-"""
+
         print("Noun Phrase Chunks")
         for np in np_chunk(tree):
             print(" ".join(np.flatten()))
-"""
+
 
 def preprocess(sentence):
     """
@@ -77,7 +77,22 @@ def np_chunk(tree):
     whose label is "NP" that does not itself contain any other
     noun phrases as subtrees.
     """
-    raise NotImplementedError
+    NP_trees = [subtree for subtree in tree.subtrees(lambda t : t.label() == 'NP')]
+    #print(NP_trees)
+
+    NP_trees_copy = NP_trees.copy()
+
+    for NP_tree in NP_trees:
+        #print(" NP Tree candidate")
+        #NP_tree.pretty_print()
+        for sub_NP_tree in NP_tree.subtrees(lambda x: x != NP_tree):
+            #print("NP Tree candidate child")
+            #sub_NP_tree.pretty_print()
+            if sub_NP_tree.label() == 'NP':
+                NP_trees_copy.remove(NP_tree)
+                break
+
+    return NP_trees_copy
 
 
 if __name__ == "__main__":
