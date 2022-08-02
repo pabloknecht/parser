@@ -52,14 +52,15 @@ def main():
         print("Could not parse sentence.")
         return
 
+
     # Print each tree with noun phrase chunks
     for tree in trees:
         tree.pretty_print()
-
+"""
         print("Noun Phrase Chunks")
         for np in np_chunk(tree):
             print(" ".join(np.flatten()))
-
+"""
 
 def preprocess(sentence):
     """
@@ -78,7 +79,7 @@ def np_chunk(tree):
     whose label is "NP" that does not itself contain any other
     noun phrases as subtrees.
     """
-
+    raise NotImplementedError
 
 
 if __name__ == "__main__":
